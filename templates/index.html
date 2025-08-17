@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My AI Assistant</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f4f7f6; color: #333; max-width: 800px; margin: 40px auto; padding: 20px; }
+        h1, h2 { color: #0056b3; }
+        .container { background-color: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        form { margin-bottom: 30px; border-bottom: 1px solid #ddd; padding-bottom: 20px; }
+        textarea { width: 98%; padding: 10px; border-radius: 4px; border: 1px solid #ccc; font-size: 1em; }
+        .options label { margin-right: 15px; }
+        button { background-color: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 4px; font-size: 1em; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+        .response-box { background-color: #e9f5ff; border-left: 5px solid #007bff; padding: 20px; margin-top: 20px; border-radius: 4px; white-space: pre-wrap; }
+        .response-box h3 { margin-top: 0; }
+        .feedback-form button { background-color: #28a745; margin-right: 10px; }
+        .feedback-form button:hover { background-color: #218838; }
+        .feedback-form button[value="no"] { background-color: #dc3545; }
+        .feedback-form button[value="no"]:hover { background-color: #c82333; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to Your AI Assistant </h1>
+
+        <form action="/" method="POST">
+            <h2>Answer a Question</h2>
+            <input type="hidden" name="function" value="qa">
+            <textarea name="query" rows="3" placeholder="e.g., What is the capital of France?"></textarea><br><br>
+            <div class="options">
+                <label><input type="radio" name="qa_style" value="1" checked> Simple & Direct</label>
+                <label><input type="radio" name="qa_style" value="2"> Detailed Explanation</label>
+                <label><input type="radio" name="qa_style" value="3"> Fun Facts</label>
+            </div><br>
+            <button type="submit">Get Answer</button>
+        </form>
+
+        <form action="/" method="POST">
+            <h2>Summarize Text</h2>
+            <input type="hidden" name="function" value="summarize">
+            <textarea name="query" rows="6" placeholder="Paste your long text here..."></textarea><br><br>
+            <div class="options">
+                <label><input type="radio" name="summarize_style" value="1" checked> Brief Overview</label>
+                <label><input type="radio" name="summarize_style" value="2"> Key Bullet Points</label>
+                <label><input type="radio" name="summarize_style" value="3"> TL;DR (One Sentence)</label>
+            </div><br>
+            <button type="submit">Summarize</button>
+        </form>
+
+        <form action="/" method="POST">
+            <h2>Generate Creative Content</h2>
+            <input type="hidden" name="function" value="creative">
+            <textarea name="query" rows="2" placeholder="e.g., a dragon and a princess"></textarea><br><br>
+            <div class="options">
+                <label><input type="radio" name="creative_style" value="1" checked> Short Poem</label>
+                <label><input type="radio" name="creative_style" value="2"> Story Idea</label>
+                <label><input type="radio" name="creative_style" value="3"> Marketing Tagline</label>
+            </div><br>
+            <button type="submit">Generate</button>
+        </form>
+
+        {% if response %}
+        <div class="response-box">
+            <h3>AI Response</h3>
+            <p>{{ response }}</p>
+            
+            <hr>
+            <form action="/feedback" method="POST" class="feedback-form">
+                <p>Was this response helpful?</p>
+                <input type="hidden" name="prompt" value="{{ prompt }}">
+                <input type="hidden" name="response" value="{{ response }}">
+                <button type="submit" name="feedback" value="yes">Helpful 👍</button>
+                <button type="submit" name="feedback" value="no">Not Helpful 👎</button>
+            </form>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
